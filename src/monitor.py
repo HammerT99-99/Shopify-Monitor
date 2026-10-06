@@ -254,7 +254,7 @@ class Shopify():
         print(f"[{datetime.datetime.now().strftime('%H:%M:%S.%f')[:-3]}] {text}")
 
 sites = [
-    {"link": "https://de.afew-store.com/", "keywords": ""},
+    {"link": "https://www.cherrycollectables.com.au/collections/pokemon", "keywords": "-mystery, -pound, -custom"},
 ]
 
 delay = 15
