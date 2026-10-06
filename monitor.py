@@ -102,9 +102,9 @@ class Shopify():
                         notification_dict[product_id] = {}
                     notification_dict[product_id][variant_id] = {
                         'size': variant['title'],
-                        'availability': f"~~None~~ -> {format_availability(availability)}",
+                        'availability': f" -> {format_availability(availability)}",
                         'id': variant_id,
-                        'type': 'New add'
+                        'type': 'New'
                     }
                     
                 # If variant already exists, check for availability change
