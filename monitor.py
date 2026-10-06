@@ -29,6 +29,14 @@ class Shopify():
     async def process_product(self, product):
         keyword_matched = False
         
+        # Helper function to format availability nicely with emojis
+        def format_availability(val):
+            if val is True or val == "True":
+                return "✅ In Stock"
+            elif val is False or val == "False":
+                return "❌ Out of Stock"
+            return str(val)
+
         if self.keywords:
             product_title = str(product['title']).lower()
             
@@ -94,7 +102,7 @@ class Shopify():
                         notification_dict[product_id] = {}
                     notification_dict[product_id][variant_id] = {
                         'size': variant['title'],
-                        'availability': f"~~None~~ -> {availability}",
+                        'availability': f"~~None~~ -> {format_availability(availability)}",
                         'id': variant_id,
                         'type': 'New add'
                     }
@@ -103,6 +111,7 @@ class Shopify():
                 else:
                     for pdvar in self.data[self.link][product_id]['variants']:
                         if pdvar['id'] == variant_id and pdvar['available'] != availability:
+                            old_status = pdvar['available']
                             pdvar['available'] = availability
                             
                             # Create notification for availability change
@@ -110,7 +119,7 @@ class Shopify():
                                 notification_dict[product_id] = {}
                             notification_dict[product_id][variant_id] = {
                                 'size': variant['title'],
-                                'availability': f"~~{pdvar['available']}~~ -> {availability}",
+                                'availability': f"~~{format_availability(old_status)}~~ -> {format_availability(availability)}",
                                 'id': variant_id,
                                 'type': 'Restock'
                             }
