@@ -16,7 +16,7 @@ class Shopify():
         parsed_url = urlparse(site)
         base_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
         self.base_url = base_url
-        self.session = tls_client.Session(client_identifier="chome_120", random_tls_extension_order=True)
+        self.session = tls_client.Session(client_identifier="chrome_120", random_tls_extension_order=True)
         self.product_json = {}
         self.data = {}
         if os.path.getsize("proxies.txt") == 0:
@@ -254,14 +254,31 @@ class Shopify():
         print(f"[{datetime.datetime.now().strftime('%H:%M:%S.%f')[:-3]}] {text}")
 
 sites = [
-    {"link": "https://www.cherrycollectables.com.au/collections/pokemon", "keywords": "-mystery, -pound, -custom"},
+    {
+        "link": "https://www.cherrycollectables.com.au/collections/pokemon", 
+        "keywords": "-mystery, -pound, -custom", 
+        "webhook": os.getenv("CHERRY_WEBHOOK_URL")
+    },
+    {
+        "link": "https://www.gameology.com.au/collections/pokemon-booster-boxes", 
+        "keywords": "", 
+        "webhook": os.getenv("GAMEOLOGY_WEBHOOK_URL")
+    },
+    {
+        "link": "https://www.gameology.com.au/collections/elite-trainer-boxes", 
+        "keywords": "", 
+        "webhook": os.getenv("GAMEOLOGY_WEBHOOK_URL")
+    },
+    {
+        "link": "https://www.gameology.com.au/collections/pokemon-tins", 
+        "keywords": "", 
+        "webhook": os.getenv("GAMEOLOGY_WEBHOOK_URL")
+    }
 ]
 
 delay = 15
 json_file_lock = threading.Lock()
 code_lock = threading.Lock()
-
-webhook_url = os.getenv("webhook_url")
 
 if __name__ == "__main__":
     for site in sites:
@@ -274,4 +291,7 @@ if __name__ == "__main__":
             else:
                 keyword_list = []
                 keyword_list.append(keywords)
-        threading.Thread(target=Shopify,args=(site['link'], keyword_list, delay, json_file_lock, code_lock, webhook_url)).start()
+        threading.Thread(
+            target=Shopify,
+            args=(site['link'], keyword_list, delay, json_file_lock, code_lock, site['webhook'])
+        ).start()
