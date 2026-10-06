@@ -2,3 +2,4 @@ tls-client
 discord-webhook
 python-dotenv
 requests
+typing-extensions
