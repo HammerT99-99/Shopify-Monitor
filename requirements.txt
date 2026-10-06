@@ -1,4 +1,4 @@
-requests
-discord-webhook
 tls-client
-typing-extensions
+discord-webhook
+python-dotenv
+requests
